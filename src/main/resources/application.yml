@@ -1,0 +1,24 @@
+server:
+  port: 3000
+secret:
+  key: 34753778217A25432A462D4A614E645267556B58703273357638792F423F4428
+spring:
+  application:
+    name: "Eureka"
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: Eureka
+  mail:
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            port: '465'
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: 'false'
+          auth: 'true'
+    host: smtp.gmail.com
+    username: spoton.rkmvcc@gmail.com
+    password: dbitoccibutjjxqp

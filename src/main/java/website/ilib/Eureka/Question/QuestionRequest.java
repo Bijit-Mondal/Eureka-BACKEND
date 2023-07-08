@@ -1,13 +1,8 @@
-package website.ilib.Eureka.Question.Model;
+package website.ilib.Eureka.Question;
 
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mongodb.lang.Nullable;
-
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,15 +10,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document(collection = "Question")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestionModel{
-    @Id
-    private String QId;
-
+public class QuestionRequest {
     @NotBlank
     private String title;
 
@@ -34,12 +25,14 @@ public class QuestionModel{
     private String imgSrc;
 
     @NotBlank
-    @JsonIgnore
     private String answer;
 
     @NotNull
     private int timeToHint;
 
-
     private List<String> hints;
+
+    public boolean isHintsValid() {
+        return hints != null && hints.size() >= 2;
+    }
 }

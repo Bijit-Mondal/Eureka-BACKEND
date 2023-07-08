@@ -8,9 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +33,8 @@ public class TeamModel implements UserDetails{
 
     @JsonIgnore
     private String password;
-
+    
+    
     @CreatedDate
     private LocalDateTime createdAt;
 

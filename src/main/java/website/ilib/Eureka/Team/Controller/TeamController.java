@@ -57,6 +57,4 @@ public class TeamController {
         ApiError error = new ApiError(HttpStatus.BAD_REQUEST, "Validation Error", errorMessage, fieldName);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
-
-    
 }

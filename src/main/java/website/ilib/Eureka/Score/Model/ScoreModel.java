@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import website.ilib.Eureka.Question.Model.QuestionModel;
+import website.ilib.Eureka.Team.Model.TeamModel;
 
 @Document(collection = "Score")
 @Data
@@ -17,14 +19,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ScoreModel {
     @Id
-    private String ScoreId;
+    private String scoreId;
 
     @DBRef
-    private String TeamId;
+    private TeamModel team;
 
     @DBRef
-    private String QuestionId;
+    private QuestionModel question;
 
     @NotNull
-    private int Score;
+    private int score;
 }

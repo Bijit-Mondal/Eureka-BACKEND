@@ -1,8 +1,14 @@
 package website.ilib.Eureka.SecurityConfig;
 
 
+import java.time.OffsetDateTime;
+import java.util.Optional;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.auditing.DateTimeProvider;
+import org.springframework.data.mongodb.config.EnableMongoAuditing;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,6 +24,7 @@ import website.ilib.Eureka.Team.Repository.TeamRepo;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableMongoAuditing
 public class ApplicationConfiguration {
     private final TeamRepo teamRepo;
 
@@ -25,6 +32,11 @@ public class ApplicationConfiguration {
     public UserDetailsService userDetailsService() {
         return email -> teamRepo.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Team not found with: " + email));
+    }
+
+    @Bean
+    public DateTimeProvider dateTimeProvider() {
+        return () -> Optional.of(OffsetDateTime.now());
     }
 
     @Bean

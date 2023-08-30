@@ -1,15 +1,16 @@
 package website.ilib.Eureka.Team.Repository;
 
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 
 import website.ilib.Eureka.Team.Model.TeamModel;
 
-@Repository
 public interface TeamRepo extends MongoRepository<TeamModel, String> {    
     Optional<TeamModel> findByEmail(String email);
+
+    List<TeamModel> findTop10ByOrderByTotalMarksDescHintUsedAscUpdatedAtAsc();
 
     boolean existsByEmail(String email);
 }

@@ -14,7 +14,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import website.ilib.Eureka.Score.ScoreRequest;
 import website.ilib.Eureka.Score.ScoreResponse;
-import website.ilib.Eureka.Score.TeamResultResponse;
 import website.ilib.Eureka.Score.Service.ScoreService;
 
 @RestController

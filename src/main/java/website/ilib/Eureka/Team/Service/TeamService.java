@@ -1,5 +1,9 @@
 package website.ilib.Eureka.Team.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import java.util.Random;
 
 
@@ -11,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import website.ilib.Eureka.Mail.Service.MailService;
 import website.ilib.Eureka.SecurityConfig.Service.JWTService;
@@ -102,5 +107,24 @@ public class TeamService{
         return sb.toString();
     }
 
+    public Map<String, Object> getResult() {
+        Map<String, Object> result = new HashMap<>();
+        List<TeamModel> teams = teamRepo.findTop10ByOrderByTotalMarksDescHintUsedAscUpdatedAtAsc();
+        
+        List<Map<String, Object>> teamList = new ArrayList<>();
+        
+        for (TeamModel team : teams) {
+            Map<String, Object> teamMap = new HashMap<>();
+            teamMap.put("teamName", team.getTeamName());
+            teamMap.put("totalMarks", team.getTotalMarks());
+            teamMap.put("hintUsed", team.getHintUsed());
+            teamMap.put("updatedAt", team.getUpdatedAt());
+            teamList.add(teamMap);
+        }
+        
+        result.put("teams", teamList);
+        
+        return result;
+    }
     
 }

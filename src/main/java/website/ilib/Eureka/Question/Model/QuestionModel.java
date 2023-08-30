@@ -32,14 +32,17 @@ public class QuestionModel{
 
     @Nullable
     private String imgSrc;
-
+    
     @NotBlank
     @JsonIgnore
     private String answer;
-
+    
     @NotNull
     private int timeToHint;
+    
+    @NotNull
+    private Integer marks;
 
-
+    @JsonIgnore
     private List<String> hints;
 }

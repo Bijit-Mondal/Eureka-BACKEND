@@ -21,6 +21,9 @@ public class QuestionRequest {
     @NotBlank
     private String question;
 
+    @NotNull
+    private Integer marks;
+
     @Nullable
     private String imgSrc;
 

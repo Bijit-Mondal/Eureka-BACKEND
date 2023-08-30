@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import website.ilib.Eureka.Question.HintResponse;
 import website.ilib.Eureka.Question.QuestionRequest;
 import website.ilib.Eureka.Question.QuestionResponse;
 import website.ilib.Eureka.Question.Model.QuestionModel;
@@ -24,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/question")
 @RequiredArgsConstructor
 public class QuestionController {
@@ -46,6 +46,20 @@ public class QuestionController {
         try {
             QuestionModel question = questionService.getQuestionById(questionId);
             return ResponseEntity.ok(question);
+        } catch (IllegalArgumentException e) {
+            // Handle the case when the question is not found
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);
+        } catch (Exception e) {
+            // Handle other exceptions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
+        }
+    }
+
+    @GetMapping("/get/{id}/hint/{num}")
+    public ResponseEntity<?> getHintById(@PathVariable("id") String questionId,@PathVariable("num") Integer hintId) {
+        try {
+            HintResponse hint = questionService.getHintById(questionId,hintId);
+            return ResponseEntity.ok(hint);
         } catch (IllegalArgumentException e) {
             // Handle the case when the question is not found
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e);

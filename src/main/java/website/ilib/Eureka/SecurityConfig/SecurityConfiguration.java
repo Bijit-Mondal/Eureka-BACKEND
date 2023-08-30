@@ -12,7 +12,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -25,24 +24,20 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests((authz)->
-                    authz
-                    .requestMatchers("/auth/**").permitAll()
-                    .requestMatchers("/question/**").authenticated()
-                    .anyRequest().permitAll()
-                )
+                .authorizeHttpRequests((authz) -> authz
+                        .requestMatchers("/auth/**").permitAll()
+                        // .requestMatchers("/question/**").authenticated()
+                        .anyRequest().permitAll()
+                        )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .exceptionHandling(ex -> ex.authenticationEntryPoint((req,res,exception)->{
-                                        res.sendError(
-                                            HttpServletResponse.SC_UNAUTHORIZED,
-                                            exception.getMessage()
-                                        );
-                                    })
-                )
+                .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, exception) -> {
+                    res.sendError(
+                            HttpServletResponse.SC_UNAUTHORIZED,
+                            exception.getMessage());
+                }))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 }
-

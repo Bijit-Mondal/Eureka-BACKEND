@@ -32,9 +32,9 @@ public class JWTService {
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
                 .signWith(getSigningKey(),SignatureAlgorithm.HS256)
-                .compact();
-                 
+                .compact(); 
     }
+
     private Claims extractAllClaims(String jwt) {
         return Jwts
                 .parserBuilder()
@@ -43,10 +43,12 @@ public class JWTService {
                 .parseClaimsJws(jwt)
                 .getBody();
     }
+    
     public <T> T extractClaim(String jwt, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(jwt);
         return claimsResolver.apply(claims);
     }
+
     public String extractUserName(String jwt) {
         return extractClaim(jwt, Claims::getSubject);
     }

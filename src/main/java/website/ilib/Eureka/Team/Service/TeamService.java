@@ -49,6 +49,9 @@ public class TeamService{
         TeamModel team = TeamModel.builder()
                     .email(request.getEmail())
                     .teamName(request.getTeamName())
+                    .level(-1)
+                    .hintUsed(0)
+                    .totalMarks(0)
                     .password(passwordEncoder.encode(password))
                     .build();
         teamRepo.save(team);
@@ -61,8 +64,9 @@ public class TeamService{
 
         var jwtToken = jwtService.generateAccessToken(team);
         return TeamResponse.builder()
-                    .email(request.getEmail())
+                    .email(team.getEmail())
                     .accessToken(jwtToken)
+                    .level(team.getLevel())
                     .build();
     }
 
@@ -82,6 +86,7 @@ public class TeamService{
         return TeamResponse.builder()
                            .accessToken(jwtToken)
                            .email(request.getEmail())
+                           .level(team.getLevel())
                            .build();
     }
     public String generatePassword() {

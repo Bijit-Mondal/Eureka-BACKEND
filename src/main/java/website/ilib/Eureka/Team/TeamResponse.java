@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class TeamResponse {
     private String email;
     private String accessToken;
+    private Integer level;
 }

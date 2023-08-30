@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +21,6 @@ import website.ilib.Eureka.Team.Exception.ApiError;
 import website.ilib.Eureka.Team.Service.TeamService;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class TeamController {
@@ -45,7 +43,7 @@ public class TeamController {
             TeamResponse response = teamService.login(request);
             return ResponseEntity.ok(response);
         }catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Wrong Password or User not found");
         }
     }
 
@@ -57,6 +55,4 @@ public class TeamController {
         ApiError error = new ApiError(HttpStatus.BAD_REQUEST, "Validation Error", errorMessage, fieldName);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
-
-    
 }

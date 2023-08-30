@@ -1,6 +1,7 @@
 package website.ilib.Eureka.Team.Model;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,21 +26,28 @@ public class TeamModel implements UserDetails{
     @Id
     private String ID;
 
-
     private String email;
-
 
     private String teamName;
 
+    private Integer level;
+
+    private Integer hintUsed;
+
+    private Integer totalMarks;
+
     @JsonIgnore
     private String password;
-    
     
     @CreatedDate
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @Version
+    private Integer version;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

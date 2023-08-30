@@ -17,7 +17,8 @@ public class TeamRequest{
     @NotBlank
     private String email;
 
-    @Size(min = 2, max = 10)
+    @Size(min = 2, max = 20)
     @NotBlank
     private String teamName;
+
 }

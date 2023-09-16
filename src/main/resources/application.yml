@@ -7,9 +7,10 @@ spring:
     name: "Eureka"
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: Eureka
+#      uri: mongodb+srv://bijitmondalrkmvcc:bijitmondalrkmvcc@spoton-cluster.s7edwny.mongodb.net/SPOTON
+       host: localhost
+       port: 27017
+       database: Eureka
   mail:
     properties:
       mail:

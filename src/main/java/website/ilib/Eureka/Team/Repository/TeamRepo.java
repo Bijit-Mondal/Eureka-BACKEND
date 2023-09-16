@@ -10,7 +10,7 @@ import website.ilib.Eureka.Team.Model.TeamModel;
 public interface TeamRepo extends MongoRepository<TeamModel, String> {    
     Optional<TeamModel> findByEmail(String email);
 
-    List<TeamModel> findTop10ByOrderByTotalMarksDescHintUsedAscUpdatedAtAsc();
+    List<TeamModel> findTop10ByOrderByLevelDescTotalMarksDescHintUsedAscUpdatedAtAsc();
 
     boolean existsByEmail(String email);
 }

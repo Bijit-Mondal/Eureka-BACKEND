@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import website.ilib.Eureka.Hint.Model.HintModel;
+import website.ilib.Eureka.Hint.Repository.HintRepo;
 import website.ilib.Eureka.Question.HintResponse;
 import website.ilib.Eureka.Question.QuestionRequest;
 import website.ilib.Eureka.Question.QuestionResponse;
@@ -24,6 +26,8 @@ public class QuestionService {
     private final QuestionRepo questionRepo;
 
     private final TeamRepo teamRepo;
+
+    private final HintRepo hintRepo;
 
     public QuestionResponse addQuestion(QuestionRequest request){
         try{
@@ -108,7 +112,7 @@ public class QuestionService {
                 .orElseThrow(() -> new IllegalArgumentException("Question not found"));
     }
 
-    public HintResponse getHintById(String questionId,Integer hintId) {
+    public HintResponse getHintById(String questionId,Integer hintId) throws Exception {
         QuestionModel question = questionRepo.findById(questionId)
                 .orElseThrow(() -> new IllegalArgumentException("No question found"));
 
@@ -125,10 +129,30 @@ public class QuestionService {
         TeamModel team = (authentication != null && authentication.getPrincipal() instanceof TeamModel)
                     ? (TeamModel) authentication.getPrincipal()
                     : null;
+
+        boolean isHintUsed = hintRepo.findByQuestionQIdAndTeamID(question, team).isPresent();
+
+        if(!isHintUsed){
+            HintModel hintModel = HintModel.builder()
+                                    .team(team)
+                                    .question(question)
+                                    .hintUsed(1)
+                                    .build();
+            hintRepo.save(hintModel);
+        }else{
+            HintModel hintModel = hintRepo.findByQuestionQIdAndTeamID(question, team)
+                .orElseThrow(()-> new Exception("You are making some error"));
+            Integer hintUsed = hintModel.getHintUsed()+1;
+
+            hintModel.setHintUsed(hintUsed);
+            hintRepo.save(hintModel);
+        }
+
         if(team == null){
             return null;
         }else{
             Integer hintUsed = team.getHintUsed()+1;
+            // Integer 
             team.setHintUsed(hintUsed);
             teamRepo.save(team);
         }

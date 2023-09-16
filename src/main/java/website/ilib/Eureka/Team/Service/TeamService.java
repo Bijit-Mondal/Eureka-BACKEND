@@ -109,7 +109,7 @@ public class TeamService{
 
     public Map<String, Object> getResult() {
         Map<String, Object> result = new HashMap<>();
-        List<TeamModel> teams = teamRepo.findTop10ByOrderByTotalMarksDescHintUsedAscUpdatedAtAsc();
+        List<TeamModel> teams = teamRepo.findTop10ByOrderByLevelDescTotalMarksDescHintUsedAscUpdatedAtAsc();
         
         List<Map<String, Object>> teamList = new ArrayList<>();
         
@@ -117,6 +117,7 @@ public class TeamService{
             Map<String, Object> teamMap = new HashMap<>();
             teamMap.put("teamName", team.getTeamName());
             teamMap.put("totalMarks", team.getTotalMarks());
+            teamMap.put("level", team.getLevel());
             teamMap.put("hintUsed", team.getHintUsed());
             teamMap.put("updatedAt", team.getUpdatedAt());
             teamList.add(teamMap);

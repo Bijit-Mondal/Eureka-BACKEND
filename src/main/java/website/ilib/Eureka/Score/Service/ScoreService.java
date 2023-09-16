@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import website.ilib.Eureka.Hint.Model.HintModel;
+import website.ilib.Eureka.Hint.Repository.HintRepo;
 import website.ilib.Eureka.Question.Model.QuestionModel;
 import website.ilib.Eureka.Question.Repository.QuestionRepo;
 import website.ilib.Eureka.Score.ScoreRequest;
@@ -28,6 +30,8 @@ public class ScoreService {
 
     private final TeamRepo teamRepo;
 
+    private final HintRepo hintRepo;
+
     public ScoreResponse addScore(@RequestBody @Valid ScoreRequest request) {
         String answer = request.getAnswer();
         try {
@@ -39,6 +43,20 @@ public class ScoreService {
                     ? (TeamModel) authentication.getPrincipal()
                     : null;
     
+            Integer totalObtainScore = question.getMarks();
+
+            boolean hintUsed = hintRepo.findByQuestionQIdAndTeamID(question, team).isPresent();
+            if(hintUsed){
+                HintModel hintModel = hintRepo.findByQuestionQIdAndTeamID(question, team).orElse(null);
+                if(hintModel.getHintUsed() == 1){
+                    totalObtainScore -= 5;
+                }else if(hintModel.getHintUsed() == 2){
+                    totalObtainScore -=15;
+                }else if(hintModel.getHintUsed() == 3){
+                    totalObtainScore -= 30;
+                }
+            }
+
             if (question != null && team != null && answer != null && answer.trim().equalsIgnoreCase(question.getAnswer().trim())) {
                 Optional<ScoreModel> existingScore = scoreRepository.findByQuestionQIdAndTeamID(question, team);
     
@@ -50,14 +68,14 @@ public class ScoreService {
                 }
     
                 ScoreModel score = ScoreModel.builder()
-                        .score(question.getMarks())
+                        .score(totalObtainScore)
                         .team(team)
                         .question(question)
                         .build();
     
                 scoreRepository.save(score);
 
-                Integer updatedScore = team.getTotalMarks() + question.getMarks();
+                Integer updatedScore = team.getTotalMarks() + totalObtainScore;
 
                 Integer level  = team.getLevel()+1;
 
